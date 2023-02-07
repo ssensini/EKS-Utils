@@ -19,3 +19,7 @@ Run the script:
 ```
 python init.py
 ```
+
+# Release notes
+
+- 2023-02-07: fix enhancement [#1](https://github.com/ssensini/EKS-Utils/issues/1)

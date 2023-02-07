@@ -118,25 +118,25 @@ questions = [
     },
     {
         "type": "input",
-        "message": "Cluster name",
+        "message": "Cluster name:",
         "name": "cluster_name",
         "validate": StringValidator()
     },
     {
         "type": "input",
-        "message": "Account ID",
+        "message": "Account ID:",
         "name": "account_id",
         "validate": AccountIDValidator()
     },
     {
         "type": "input",
-        "message": "Role name",
+        "message": "Role name:",
         "name": "role_name",
         "validate": StringValidator()
     },
     {
         "type": "input",
-        "message": "Username",
+        "message": "Username:",
         "name": "username"
     },
     {
@@ -161,7 +161,8 @@ def aws_configure(result):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -173,7 +174,8 @@ def aws_configure(result):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -186,7 +188,8 @@ def aws_configure(result):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -198,8 +201,8 @@ def aws_configure(result):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
-        print(res)
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("Completed.")
@@ -216,8 +219,8 @@ def assume_role(result):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print(res)
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     return res
@@ -232,7 +235,8 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -245,7 +249,8 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -258,7 +263,8 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -297,7 +303,7 @@ def main():
             if file_exists and file_empty != False and json_object and len(json_object) > 0:
                 result = prompt(use_config)
                 if result["confirmation"]:
-                    print("Proceeding with existing data")
+                    print("Proceeding with existing data in config.json.")
                     result = json_object
                 else:
                     result = prompt(questions)
@@ -360,8 +366,8 @@ def main():
     res = runcmd_call(cmd)
 
     if type(res) == int:
-        print(res)
-        print("Error during the execution. Abort")
+        print("Return code:", res)
+        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("You should be logged. Try with 'kubectl get pods' now.")
