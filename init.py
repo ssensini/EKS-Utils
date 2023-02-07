@@ -267,7 +267,10 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
 def remove_profile(profile):
     home = os.path.expanduser('~')
 
-    file = os.path.join(home, ".aws\\credentials")
+    if os.name == "nt":
+        file = os.path.join(home, ".aws\\credentials")
+    else:
+        file = os.path.join(home, ".aws/credentials")
 
     try:
         with open(file, "r") as f:
