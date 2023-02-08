@@ -11,7 +11,7 @@ A command-line script to login to an EKS cluster providing the basic information
 Install the dependencies with *pip*:
 
 ```
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 Run the script:
