@@ -162,7 +162,8 @@ def aws_configure(result):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -175,7 +176,8 @@ def aws_configure(result):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -189,7 +191,8 @@ def aws_configure(result):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -202,7 +205,8 @@ def aws_configure(result):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("Completed.")
@@ -220,7 +224,8 @@ def assume_role(result):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     return res
@@ -236,7 +241,8 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -250,7 +256,8 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -264,7 +271,8 @@ def aws_set_assumed_profile(access_key_id, secret_access_key, session_token):
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("OK")
@@ -289,8 +297,17 @@ def remove_profile(profile):
         print("Configuration not found.")
 
 
-def main():
+def prompt_questions(questions):
+    result = prompt(questions)
+    if result["confirmation"]:
+        print("Proceeding with inserted data.")
+        return result
+    else:
+        print("To enter again the data, re-run the script. Bye!")
+        sys.exit()
 
+
+def main():
     # Step 0: preparing the environment
 
     result = None
@@ -306,14 +323,14 @@ def main():
                     print("Proceeding with existing data in config.json.")
                     result = json_object
                 else:
-                    result = prompt(questions)
+                    result = prompt_questions(questions)
             else:
-                result = prompt(questions)
+                result = prompt_questions(questions)
+
     except KeyboardInterrupt:
         print("User exited. Bye!")
     except FileNotFoundError as e:
-        result = prompt(questions)
-
+        result = prompt_questions(questions)
     except Exception as e:
         print(e)
         print("Syntax error in config.json. Lint that file or REMOVE it!")
@@ -367,7 +384,8 @@ def main():
 
     if type(res) == int:
         print("Return code:", res)
-        print("Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
+        print(
+            "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
     print("You should be logged. Try with 'kubectl get pods' now.")
