@@ -3,8 +3,10 @@ from prompt_toolkit.validation import Validator, ValidationError
 import re
 import sys
 import subprocess
+from subprocess import PIPE
 import json
 import os
+import signal
 
 from os.path import exists
 
@@ -89,6 +91,7 @@ class AccountIDValidator(Validator):
 def runcmd_call(cmd):
     try:
         p = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
+        # p = subprocess.call(cmd)
     except subprocess.CalledProcessError as suberr:
         p = suberr.returncode
     except Exception as e:
@@ -138,6 +141,11 @@ questions = [
         "type": "input",
         "message": "Username:",
         "name": "username"
+    },
+    {
+        "type": "input",
+        "message": "Service account to connect to the dashboard:",
+        "name": "service_account"
     },
     {
         "type": "confirm", "message": "Confirm?",
@@ -297,6 +305,40 @@ def remove_profile(profile):
         print("Configuration not found.")
 
 
+def connect_to_dashboard(result):
+    cmd = ['kubectl', '-n', 'kubernetes-dashboard', 'create', 'token', result["service_account"], "--duration=12h"]
+
+    print('\n::: Getting token to connect to the Kubernetes Dashboard: ' + ' '.join(cmd) + ' ::: \n')
+
+    res = runcmd_call(cmd)
+
+    return res.decode("utf-8")
+
+
+def proxy_to_dashboard():
+    cmd = ['kubectl', 'proxy']
+
+    print('\n::: Connecting to Kubernetes dashboard... ' + ' '.join(cmd) + ' ::: \n')
+
+    try:
+        p = subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE)
+        print("You should now be authenticated.")
+        print("Try with 'kubectl get pods' now to use the CLI, or connect to the following URL to connect")
+        print("")
+        print(
+            "http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#!/login")
+        print("")
+        print("To stop the 'kubectl proxy', use Ctrl+C")
+        print("-------")
+        for line in p.stdout:
+            print(line.decode("UTF-8"))
+    except subprocess.CalledProcessError:
+        print("Error during the connection to the dashboard. Check the previous logs and retry.")
+        sys.exit(0)
+    except Exception as e:
+        print("Error during the connection to the dashboard. Check the previous logs and retry.")
+        sys.exit(0)
+
 def prompt_questions(questions):
     result = prompt(questions)
     if result["confirmation"]:
@@ -388,7 +430,28 @@ def main():
             "Error during the execution. Run the command manually or check the documentation to get more details: http://bit.ly/3YdDA0f")
         sys.exit(-1)
 
-    print("You should be logged. Try with 'kubectl get pods' now.")
+    # Step 5 (optional): if a dashboard is available, get the token to access it.
+
+
+    try:
+
+        if None != result["service_account"]:
+            token = connect_to_dashboard(result)
+
+            print("::: Generated token (valid for 12 hours) :::")
+            print("::: COPY AND PASTE THIS :::")
+            print("============================================")
+            print(token)
+            print("============================================")
+
+
+            proxy_to_dashboard()
+
+    except KeyboardInterrupt:
+        print("")
+        print("Closing connection to Kubernetes cluster...")
+        print("Bye!")
+
 
 
 main()
