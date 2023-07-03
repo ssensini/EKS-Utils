@@ -155,7 +155,7 @@ questions = [
 
 use_config = [
     {
-        "type": "confirm", "message": "File config.json with some configuration found. Use this file to proceed?",
+        "type": "confirm", "message": "File configold.json with some configuration found. Use this file to proceed?",
         "name": "confirmation"
     },
 ]
@@ -375,7 +375,7 @@ def main():
         result = prompt_questions(questions)
     except Exception as e:
         print(e)
-        print("Syntax error in config.json. Lint that file or REMOVE it!")
+        print("Syntax error in configold.json. Lint that file or REMOVE it!")
         sys.exit()
 
     # Store file for future use
@@ -407,10 +407,6 @@ def main():
     secret_access_key = credentials["Credentials"]["SecretAccessKey"]
     session_token = credentials["Credentials"]["SessionToken"]
 
-    print(access_key_id)
-    print(secret_access_key)
-    print(session_token)
-
     aws_set_assumed_profile(access_key_id, secret_access_key, session_token)
 
     print("Completed.")
@@ -435,7 +431,7 @@ def main():
 
     try:
 
-        if None != result["service_account"]:
+        if "service_account" in result and None != result["service_account"]:
             token = connect_to_dashboard(result)
 
             print("::: Generated token (valid for 12 hours) :::")
@@ -446,6 +442,11 @@ def main():
 
 
             proxy_to_dashboard()
+
+        else:
+
+            print("::: ERROR: Missing 'service_account' in config.json file. Add it manually with the actual value of the configured service account for EKS, or move the current config.json file and generate it again. :::")
+
 
     except KeyboardInterrupt:
         print("")
