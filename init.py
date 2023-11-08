@@ -73,7 +73,7 @@ class StringValidator(Validator):
 class AccountIDValidator(Validator):
 
     def contains_symbols(self, value):
-        regex = re.compile('^\d{12}$')
+        regex = re.compile('^\\d{12}$')
         is_match = regex.match(value) is not None
         return is_match
 
